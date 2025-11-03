@@ -18,7 +18,22 @@ $skills     = [];
 
 try {
     // Fetch user
-    $stmt = $pdo->prepare("SELECT id, first_name, last_name, email, profile_pic FROM users WHERE id = :id LIMIT 1");
+    $stmt = $pdo->prepare("
+        SELECT
+            id,
+            first_name,
+            last_name,
+            email,
+            profile_pic,
+            about_me,
+            phone,
+            address,
+            github,
+            linkedin
+        FROM users
+        WHERE id = :id
+        LIMIT 1
+    ");
     $stmt->execute([':id' => $user_id]);
     $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
@@ -106,16 +121,48 @@ function esc($s) {
 <div class="container">
     <!-- SIDEBAR -->
     <div class="sidebar">
-        <img class="avatar" src="<?php echo esc($avatar_src); ?>" alt="Profile picture">
+        <div class="profile-photo-section" style="text-align:center; margin-bottom:20px;">
+            <img class="avatar" src="<?php echo esc($avatar_src); ?>" alt="Profile picture" style="width:180px; height:180px; border-radius:50%; object-fit:cover; border:2px solid #ccc;">
 
-        <h2 style="font-size:20px; margin:0;"><?php echo esc($user['first_name'] . ' ' . $user['last_name']); ?></h2>
-        <p style="margin-top:6px;"><?php echo esc($user['email']); ?></p>
+            <!-- Upload / Remove Buttons -->
+            <form action="profile_upload.php" method="post" enctype="multipart/form-data" style="margin-top:12px; display:flex; flex-direction:column; align-items:center; gap:6px;">
+                <input type="file" name="profile_pic" accept="image/*" style="width:180px;">
+                
+                <div style="display:flex; justify-content:center; gap:8px;">
+                    <button type="submit" name="action" value="upload" style="padding:5px 10px;">Upload</button>
+                    <?php if (!empty($user['profile_pic']) && file_exists($user['profile_pic'])): ?>
+                        <button type="submit" name="action" value="remove" style="padding:5px 10px; background:#c33; color:white;">Remove</button>
+                    <?php endif; ?>
+                </div>
+            </form>
+        </div>
 
-        <!-- upload form -->
-        <form action="profile_upload.php" method="post" enctype="multipart/form-data" style="margin-top:12px;">
-            <input type="file" name="profile_pic" accept="image/*" required><br><br>
-            <button type="submit">Upload</button>
-        </form>
+    <h2 style="font-size:20px; margin:0; display:flex; align-items:center; gap:10px;">
+        <?= esc($user['first_name'] . ' ' . $user['last_name']); ?>
+        <button onclick="window.location.href='edit_profile.php'" class="edit-btn-inline">Edit Profile</button>
+    </h2>
+    <p style="margin-top:6px;"><?= esc($user['email']); ?></p>
+
+    <?php if (!empty($user['phone'])): ?>
+        <p><strong>Phone:</strong> <?= esc($user['phone']); ?></p>
+    <?php endif; ?>
+
+    <?php if (!empty($user['address'])): ?>
+        <p><strong>Address:</strong> <?= esc($user['address']); ?></p>
+    <?php endif; ?>
+
+    <?php if (!empty($user['github'])): ?>
+        <p><strong>GitHub:</strong> <a href="<?= esc($user['github']); ?>" target="_blank">View</a></p>
+    <?php endif; ?>
+
+    <?php if (!empty($user['linkedin'])): ?>
+        <p><strong>LinkedIn:</strong> <a href="<?= esc($user['linkedin']); ?>" target="_blank">View</a></p>
+    <?php endif; ?>
+
+        <?php if (!empty($user['about_me'])): ?>
+            <h2>About Me</h2>
+            <p><?= nl2br(htmlspecialchars($user['about_me'])) ?></p>
+        <?php endif; ?>
 
         <a class="logout" href="logout.php">Logout</a>
     </div>
@@ -181,9 +228,12 @@ function esc($s) {
             <?php endforeach; ?>
         <?php endif; ?>
 
-    <h2>Skills <a style="font-size:12px;margin-left:10px;" href="skills/add.php">[+ Add]</a></h2>
+    <h2>Technical Skills
+    <a style="font-size:12px; margin-left:10px;" href="skills/add.php">[+ Add]</a>
+    </h2>
+
     <?php if (count($skills) === 0): ?>
-        <p>No skills added yet.</p>
+        <p>No technical skills added yet.</p>
     <?php else: ?>
         <ul>
         <?php foreach ($skills as $skill): ?>
@@ -199,6 +249,9 @@ function esc($s) {
         </ul>
     <?php endif; ?>
     </div>
+
+    <a href="public_resume.php?id=<?= $_SESSION['user_id'] ?>" target="_blank">View Public Resume</a>
+
 </div>
 </body>
 </html>

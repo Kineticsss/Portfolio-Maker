@@ -1,3 +1,5 @@
+<link rel="stylesheet" href="../crud.css">
+
 <?php
 session_start();
 require_once __DIR__ . '/../dbconfig.php';
@@ -34,4 +36,5 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     Description:<br>
     <textarea name="description"><?= htmlspecialchars($edu['description']) ?></textarea><br>
     <button type="submit">Update</button>
+    <button type="button" onclick="window.location.href='../portfolio.php'"> Back</button>
 </form>

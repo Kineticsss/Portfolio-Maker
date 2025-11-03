@@ -1,3 +1,5 @@
+<link rel="stylesheet" href="../crud.css">
+
 <?php
 session_start();
 require_once __DIR__ . '/../dbconfig.php';

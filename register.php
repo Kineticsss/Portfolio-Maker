@@ -7,7 +7,6 @@ $errors = [];
 $success = '';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    // Keep values from previous attempt
     $first_name       = trim($_POST['first_name'] ?? '');
     $last_name        = trim($_POST['last_name'] ?? '');
     $email            = trim($_POST['email'] ?? '');

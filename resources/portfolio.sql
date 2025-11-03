@@ -48,3 +48,14 @@
 -- );
 
 -- ALTER TABLE users ADD COLUMN profile_pic VARCHAR(255);
+
+-- TRUNCATE TABLE users RESTART IDENTITY CASCADE; (To Reset All Tables)
+-- ALTER TABLE users ADD COLUMN summary TEXT;
+
+-- ALTER TABLE users
+-- ADD COLUMN phone VARCHAR(20),
+-- ADD COLUMN address TEXT,
+-- ADD COLUMN github VARCHAR(255),
+-- ADD COLUMN linkedin VARCHAR(255);
+
+-- ALTER TABLE users ADD COLUMN public_token VARCHAR(64);

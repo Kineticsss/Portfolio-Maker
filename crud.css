@@ -1,0 +1,104 @@
+body {
+    margin: 0;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #f9f9f9;
+    font-family: "Segoe UI", Arial, sans-serif;
+}
+
+.crud-box {
+    width: 400px;
+    background: #fff;
+    padding: 30px 25px;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+    text-align: center;
+}
+
+.crud-box h2 {
+    margin-bottom: 20px;
+    font-size: 22px;
+    font-weight: 600;
+    color: #333;
+}
+
+.crud-box input[type="text"],
+.crud-box input[type="number"],
+.crud-box input[type="email"],
+.crud-box input[type="password"],
+.crud-box select,
+.crud-box textarea {
+    width: 100%;
+    padding: 10px 12px;
+    margin: 8px 0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 15px;
+    box-sizing: border-box;
+}
+
+.crud-box textarea {
+    resize: vertical;
+}
+
+.button-group {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  margin-top: 15px;
+}
+
+.button-group button {
+  flex: 1;
+  max-width: 150px;
+  padding: 10px;
+  font-size: 15px;
+  font-weight: bold;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  box-sizing: border-box;
+  text-align: center;
+}
+
+.button-group button[type="submit"] {
+  background-color: #333;
+  color: white;
+}
+
+.button-group button[type="submit"]:hover {
+  background-color: #555;
+}
+
+.button-group button[type="button"] {
+  background-color: #777;
+  color: white;
+}
+
+.button-group button[type="button"]:hover {
+  background-color: #999;
+}
+
+.error {
+    color: #b30000;
+    background: #ffe6e6;
+    border: 1px solid #ffb3b3;
+    padding: 8px;
+    margin-bottom: 10px;
+    border-radius: 6px;
+    font-size: 14px;
+}
+
+.success {
+    color: #006600;
+    background: #e6ffe6;
+    border: 1px solid #b3ffb3;
+    padding: 8px;
+    margin-bottom: 10px;
+    border-radius: 6px;
+    font-size: 14px;
+}

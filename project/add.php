@@ -1,3 +1,5 @@
+<link rel="stylesheet" href="../crud.css">
+
 <?php
 session_start();
 require_once __DIR__ . '/../dbconfig.php';
@@ -30,4 +32,5 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     End Date: <input type="date" name="end_date"><br>
     Link: <input type="url" name="link"><br>
     <button type="submit">Save</button>
+    <button type="button" onclick="window.location.href='../portfolio.php'"> Back</button>
 </form>
