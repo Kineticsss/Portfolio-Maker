@@ -1,17 +1,6 @@
 <?php
-require '../dbconfig.php';
 session_start();
-
-$user_id = $_SESSION['user_id'] ?? 0;
-if ($user_id <= 0) die("Not logged in.");
-
-$new_token = bin2hex(random_bytes(32)); // 64-character token
-
-$stmt = $pdo->prepare("UPDATE users SET public_token = :token WHERE id = :id");
-$stmt->execute([':token' => $new_token, ':id' => $user_id]);
-
-echo "Public resume link: http://localhost/Portfolio/public_resume.php?token=$new_token";
-?>
+require 'dbconfig.php';
 
 if (!isset($_SESSION['user_id'])) {
     header("Location: login.php");
@@ -20,19 +9,27 @@ if (!isset($_SESSION['user_id'])) {
 
 $user_id = $_SESSION['user_id'];
 
-// Fetch current data
+$stmt = $pdo->prepare("SELECT public_token FROM users WHERE id = :id");
+$stmt->execute([':id' => $user_id]);
+$token = $stmt->fetchColumn();
+
+if (!$token) {
+    $token = bin2hex(random_bytes(32));
+    $stmt = $pdo->prepare("UPDATE users SET public_token = :token WHERE id = :id");
+    $stmt->execute([':token' => $token, ':id' => $user_id]);
+}
+
+$public_link = "http://localhost/Portfolio/public_resume.php?token=$token";
+
 $stmt = $pdo->prepare("SELECT first_name, last_name, email, about_me, phone, address, github, linkedin FROM users WHERE id = :id");
 $stmt->execute([':id' => $user_id]);
 $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
-if (!$user) {
-    die("User not found.");
-}
+if (!$user) die("User not found.");
 
 $errors = [];
 $success = "";
 
-// Handle form submission
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $first_name = trim($_POST['first_name']);
     $last_name  = trim($_POST['last_name']);
@@ -43,23 +40,21 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $github     = trim($_POST['github']);
     $linkedin   = trim($_POST['linkedin']);
 
-    // Validation
     if (!preg_match("/^[A-Za-z\s'-]+$/", $first_name)) $errors[] = "First name can only contain letters, spaces, or hyphens.";
     if (!preg_match("/^[A-Za-z\s'-]+$/", $last_name))  $errors[] = "Last name can only contain letters, spaces, or hyphens.";
     if (!filter_var($email, FILTER_VALIDATE_EMAIL))     $errors[] = "Invalid email format.";
     if (empty($address))                               $errors[] = "Address is required.";
     if (!preg_match("/^[0-9+\-\s()]+$/", $phone))      $errors[] = "Invalid phone number format.";
 
-    // Optional links
     if (!empty($github) && !filter_var($github, FILTER_VALIDATE_URL))   $errors[] = "GitHub link must be a valid URL.";
     if (!empty($linkedin) && !filter_var($linkedin, FILTER_VALIDATE_URL)) $errors[] = "LinkedIn link must be a valid URL.";
 
     if (empty($errors)) {
         $stmt = $pdo->prepare("
-            UPDATE users 
-            SET first_name = :first_name, 
-                last_name = :last_name, 
-                email = :email, 
+            UPDATE users
+            SET first_name = :first_name,
+                last_name = :last_name,
+                email = :email,
                 about_me = :about_me,
                 phone = :phone,
                 address = :address,
@@ -79,7 +74,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             ':id' => $user_id
         ]);
         $success = "Profile updated successfully!";
-        // Refresh user data
         $user = array_merge($user, $_POST);
     }
 }
@@ -99,11 +93,18 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         button:hover { background: #0056b3; }
         .error { color: red; margin-bottom: 10px; }
         .success { color: green; margin-bottom: 10px; }
+        .public-link { margin-bottom: 15px; font-size: 0.9em; color: #555; }
+        .public-link a { color: #007BFF; text-decoration: none; }
+        .public-link a:hover { text-decoration: underline; }
     </style>
 </head>
 <body>
 <div class="form-container">
     <h2>Edit Profile</h2>
+
+    <div class="public-link">
+        Public resume link: <a href="<?= htmlspecialchars($public_link) ?>" target="_blank"><?= htmlspecialchars($public_link) ?></a>
+    </div>
 
     <?php if (!empty($errors)): ?>
         <div class="error">

@@ -1,6 +1,6 @@
 <?php
 session_start();
-require 'dbconfig.php';
+require __DIR__ . '/dbconfig.php';
 
 if (!isset($_SESSION['user_id'])) {
     header("Location: login.php");
@@ -9,7 +9,6 @@ if (!isset($_SESSION['user_id'])) {
 
 $user_id = (int) $_SESSION['user_id'];
 
-// Default initializations so template never sees undefined variables
 $user = null;
 $education  = [];
 $experience = [];
@@ -17,7 +16,6 @@ $projects   = [];
 $skills     = [];
 
 try {
-    // Fetch user
     $stmt = $pdo->prepare("
         SELECT
             id,
@@ -38,14 +36,12 @@ try {
     $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
     if (!$user) {
-        // if user row doesn't exist, destroy session and redirect to login
         session_unset();
         session_destroy();
         header("Location: login.php");
         exit();
     }
 
-    // Fetch education
     $stmt = $pdo->prepare("SELECT id, degree, school, start_date, end_date, description
                            FROM education
                            WHERE user_id = :id
@@ -53,15 +49,14 @@ try {
     $stmt->execute([':id' => $user_id]);
     $education = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-    // Fetch experience
     $stmt = $pdo->prepare("SELECT id, title, company, start_date, end_date, description
                            FROM experience
                            WHERE user_id = :id
                            ORDER BY start_date DESC NULLS LAST");
     $stmt->execute([':id' => $user_id]);
     $experience = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    
 
-    // Fetch projects
     $stmt = $pdo->prepare("SELECT id, title, description, start_date, end_date, link
                            FROM projects
                            WHERE user_id = :id
@@ -69,22 +64,19 @@ try {
     $stmt->execute([':id' => $user_id]);
     $projects = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-    // Fetch skills
+
     $stmt = $pdo->prepare("SELECT id, skill_name, proficiency FROM skills WHERE user_id = :id ORDER BY skill_name ASC");
     $stmt->execute([':id' => $user_id]);
     $skills = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 } catch (PDOException $e) {
-    // In dev you can echo $e->getMessage(); but don't expose errors in production.
     die("Database error. Please check logs.");
 }
 
-// Choose avatar: uploaded file if exists, or inline SVG placeholder
 $avatar_src = '';
 if (!empty($user['profile_pic']) && file_exists($user['profile_pic'])) {
     $avatar_src = $user['profile_pic'];
 } else {
-    // Simple inline SVG placeholder (no external files)
     $svg = '<svg xmlns="http://www.w3.org/2000/svg" width="300" height="300">
       <rect fill="#e9e9e9" width="100%" height="100%"/>
       <text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="#666" font-family="Georgia, serif" font-size="20">No Image</text>
@@ -101,9 +93,8 @@ function esc($s) {
 <head>
     <meta charset="utf-8">
     <title><?php echo esc($user['first_name'] . ' ' . $user['last_name']); ?> - Portfolio</title>
-    <link rel="stylesheet" href="style.css"> <!-- external CSS -->
+    <link rel="stylesheet" href="style.css">
     <style>
-        /* minimal layout fallback if style.css missing */
         .container { display:flex; max-width:1000px;margin:40px auto; }
         .sidebar { width:260px;padding:20px;border-right:1px solid #000;background:#fafafa; }
         .main { flex:1;padding:20px; }
@@ -119,12 +110,10 @@ function esc($s) {
 </head>
 <body>
 <div class="container">
-    <!-- SIDEBAR -->
     <div class="sidebar">
         <div class="profile-photo-section" style="text-align:center; margin-bottom:20px;">
             <img class="avatar" src="<?php echo esc($avatar_src); ?>" alt="Profile picture" style="width:180px; height:180px; border-radius:50%; object-fit:cover; border:2px solid #ccc;">
 
-            <!-- Upload / Remove Buttons -->
             <form action="profile_upload.php" method="post" enctype="multipart/form-data" style="margin-top:12px; display:flex; flex-direction:column; align-items:center; gap:6px;">
                 <input type="file" name="profile_pic" accept="image/*" style="width:180px;">
                 
@@ -167,7 +156,6 @@ function esc($s) {
         <a class="logout" href="logout.php">Logout</a>
     </div>
 
-    <!-- MAIN -->
     <div class="main">
         <h2>Education <a style="font-size:12px;margin-left:10px;" href="education/add.php">[+ Add]</a></h2>
         <?php if (count($education) === 0): ?>
