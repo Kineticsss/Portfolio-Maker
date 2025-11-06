@@ -1,130 +1,90 @@
 body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: #f5f6fa;
     margin: 0;
-    height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: #f9f9f9;
-    font-family: Arial, sans-serif;
+    padding: 20px;
 }
 
-.login-box {
-    width: 350px;
-    padding: 30px 25px;
-    background: #fff;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    text-align: center;
+.container {
+    max-width: 1000px;
+    margin: auto;
+    background: white;
+    padding: 30px;
+    border-radius: 10px;
     box-shadow: 0 4px 10px rgba(0,0,0,0.1);
 }
 
-.login-box input[type="text"],
-.login-box input[type="password"],
-.login-box input[type="email"] {
-    width: 100%;
-    padding: 10px;
-    margin: 8px 0;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    box-sizing: border-box;
+h1 {
+    color: #2c3e50;
+    text-align: center;
+    margin-bottom: 30px;
 }
 
-.login-box input {
-    width: 100%;
-    padding: 10px;
-    margin: 8px 0;
-    border: 1px solid #ccc;
-    border-radius: 4px;
+.section {
+    margin-bottom: 30px;
 }
 
-.login-box button {
-    width: 100%;
-    padding: 10px;
-    margin-top: 10px;
-    background: #333;
-    color: #fff;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-}
-
-.login-box button:hover {
-    background: #555;
-}
-
-.logo {
-    width: 80px;
+.section h2 {
+    color: #007bff;
+    border-bottom: 2px solid #007bff;
+    padding-bottom: 6px;
     margin-bottom: 15px;
 }
 
-.register-link {
-    display: block;
-    margin-top: 12px;
-    font-size: 14px;
+.table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 15px;
+}
+
+.table th, .table td {
+    padding: 10px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+.table th {
+    background-color: #f0f2f5;
     color: #333;
-    text-decoration: underline;
 }
 
-.error {
-    color: red;
-    margin-top: 10px;
-    font-size: 14px;
-}
-
-.success {
-    color: green;
-    margin-top: 10px;
-    font-size: 14px;
-}
-
-.notification {
-    margin: 15px 0;
-    padding: 12px;
-    border-radius: 6px;
-    font-weight: bold;
-}
-
-.notification:has(> :contains("✅")),
-.notification:contains("✅") {
-    background-color: #e6ffe6;
-    color: #006600;
-    border: 1px solid #00b300;
-}
-
-.notification:has(> :contains("❌")),
-.notification:contains("❌") {
-    background-color: #ffe6e6;
-    color: #990000;
-    border: 1px solid #cc0000;
-}
-
-button[type="button"] {
-    background: #777;
-    color: white;
-    border: none;
+.btn {
+    padding: 5px 10px;
+    text-decoration: none;
     border-radius: 4px;
-    padding: 8px 12px;
-    margin-left: 5px;
-    cursor: pointer;
+    font-size: 13px;
 }
 
-button[type="button"]:hover {
-    background: #999;
-}
-
-.edit-btn-inline {
-    font-size: 12px;
-    padding: 4px 8px;
+.btn-edit {
     background-color: #007BFF;
     color: white;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    transition: background-color 0.2s ease-in-out;
 }
 
-.edit-btn-inline:hover {
+.btn-edit:hover {
     background-color: #0056b3;
 }
 
+.btn-delete {
+    background-color: #dc3545;
+    color: white;
+}
 
+.btn-delete:hover {
+    background-color: #a71d2a;
+}
+
+
+.btn-public {
+    background: linear-gradient(90deg, #ff9800, #f57c00);
+    color: white;
+}
+.btn-public:hover {
+    background: linear-gradient(90deg, #f57c00, #e65100);
+}
+
+.footer {
+    text-align: center;
+    color: #777;
+    margin-top: 40px;
+    font-size: 0.9em;
+}

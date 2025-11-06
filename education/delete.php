@@ -1,13 +1,23 @@
-<link rel="stylesheet" href="../crud.css">
-
 <?php
 session_start();
-require_once __DIR__ . '/../dbconfig.php';
-if (!isset($_SESSION['user_id'])) { header("Location: login.php"); exit(); }
+require '../dbconfig.php';
 
-$id = $_GET['id'];
+if (!isset($_SESSION['user_id'])) {
+    header("Location: ../login.php");
+    exit();
+}
+
+if (!isset($_GET['id'])) {
+    die("Missing education ID.");
+}
+
+$user_id = $_SESSION['user_id'];
+$edu_id = $_GET['id'];
+
+// Delete only if the record belongs to the user
 $stmt = $pdo->prepare("DELETE FROM education WHERE id = :id AND user_id = :user_id");
-$stmt->execute([':id' => $id, ':user_id' => $_SESSION['user_id']]);
-header("Location: ../portfolio.php");
-exit();
+$stmt->execute([':id' => $edu_id, ':user_id' => $user_id]);
 
+header("Location: ../portfolio.php?msg=deleted");
+exit();
+?>

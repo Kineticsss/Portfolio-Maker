@@ -1,13 +1,16 @@
-<link rel="stylesheet" href="../crud.css">
-
 <?php
+require '../dbconfig.php';
 session_start();
-require_once __DIR__ . '/../dbconfig.php';
-if (!isset($_SESSION['user_id'])) { header("Location: login.php"); exit(); }
 
-$id = $_GET['id'];
-$stmt = $pdo->prepare("DELETE FROM projects WHERE id=:id AND user_id=:user_id");
-$stmt->execute([':id'=>$id, ':user_id'=>$_SESSION['user_id']]);
+$user_id = $_SESSION['user_id'] ?? null;
+if (!$user_id) die("User not logged in.");
+
+$id = $_GET['id'] ?? null;
+if (!$id) die("Invalid ID.");
+
+$stmt = $pdo->prepare("DELETE FROM projects WHERE id = :id AND user_id = :uid");
+$stmt->execute([':id' => $id, ':uid' => $user_id]);
+
 header("Location: ../portfolio.php");
-exit();
-
+exit;
+?>
