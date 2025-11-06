@@ -24,7 +24,6 @@ if (!$token) {
 $protocol = isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http";
 $host = $_SERVER['HTTP_HOST'];
 $script_path = dirname($_SERVER['SCRIPT_NAME']);
-// Remove trailing slash if present
 $script_path = rtrim($script_path, '/');
 $public_link = "$protocol://$host$script_path/public_resume.php?token=$token";
 
@@ -473,36 +472,36 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['save_profile'])) {
                     
                     <div class="form-group">
                         <label for="first_name">First Name</label>
-                        <input type="text" id="first_name" name="first_name" 
-                               value="<?= htmlspecialchars($user['first_name']) ?>" 
+                        <input type="text" id="first_name" name="first_name"
+                               value="<?= htmlspecialchars($user['first_name']) ?>"
                                required maxlength="50">
                     </div>
 
                     <div class="form-group">
                         <label for="last_name">Last Name</label>
-                        <input type="text" id="last_name" name="last_name" 
-                               value="<?= htmlspecialchars($user['last_name']) ?>" 
+                        <input type="text" id="last_name" name="last_name"
+                               value="<?= htmlspecialchars($user['last_name']) ?>"
                                required maxlength="50">
                     </div>
 
                     <div class="form-group">
                         <label for="email">Email Address</label>
-                        <input type="email" id="email" name="email" 
-                               value="<?= htmlspecialchars($user['email']) ?>" 
+                        <input type="email" id="email" name="email"
+                               value="<?= htmlspecialchars($user['email']) ?>"
                                required maxlength="100">
                     </div>
 
                     <div class="form-group">
                         <label for="phone">Phone Number</label>
-                        <input type="tel" id="phone" name="phone" 
-                               value="<?= htmlspecialchars($user['phone'] ?? '') ?>" 
+                        <input type="tel" id="phone" name="phone"
+                               value="<?= htmlspecialchars($user['phone'] ?? '') ?>"
                                placeholder="+1 (555) 123-4567" maxlength="20">
                     </div>
 
                     <div class="form-group">
                         <label for="address">Address</label>
-                        <input type="text" id="address" name="address" 
-                               value="<?= htmlspecialchars($user['address'] ?? '') ?>" 
+                        <input type="text" id="address" name="address"
+                               value="<?= htmlspecialchars($user['address'] ?? '') ?>"
                                required maxlength="200"
                                placeholder="City, State, Country">
                     </div>
@@ -514,7 +513,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['save_profile'])) {
                     
                     <div class="form-group">
                         <label for="about_me" class="optional">Tell us about yourself</label>
-                        <textarea id="about_me" name="about_me" 
+                        <textarea id="about_me" name="about_me"
                                   rows="6" maxlength="1000"
                                   placeholder="Write a brief introduction about yourself, your skills, and what you're passionate about..."><?= htmlspecialchars($user['about_me'] ?? '') ?></textarea>
                         <small style="color: #6c757d; font-size: 12px;">
@@ -529,22 +528,22 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['save_profile'])) {
                     
                     <div class="form-group">
                         <label for="github" class="optional">GitHub Profile</label>
-                        <input type="url" id="github" name="github" 
-                               value="<?= htmlspecialchars($user['github'] ?? '') ?>" 
+                        <input type="url" id="github" name="github"
+                               value="<?= htmlspecialchars($user['github'] ?? '') ?>"
                                placeholder="https://github.com/username" maxlength="200">
                     </div>
 
                     <div class="form-group">
                         <label for="linkedin" class="optional">LinkedIn Profile</label>
-                        <input type="url" id="linkedin" name="linkedin" 
-                               value="<?= htmlspecialchars($user['linkedin'] ?? '') ?>" 
+                        <input type="url" id="linkedin" name="linkedin"
+                               value="<?= htmlspecialchars($user['linkedin'] ?? '') ?>"
                                placeholder="https://linkedin.com/in/username" maxlength="200">
                     </div>
                 </div>
 
                 <!-- Form Actions -->
                 <div class="form-actions">
-                    <button type="button" class="btn btn-secondary" 
+                    <button type="button" class="btn btn-secondary"
                             onclick="window.location.href='portfolio.php'">
                         ← Back to Portfolio
                     </button>
@@ -560,14 +559,12 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['save_profile'])) {
         function copyLink() {
             const linkInput = document.getElementById("publicLink");
             linkInput.select();
-            linkInput.setSelectionRange(0, 99999); // For mobile devices
+            linkInput.setSelectionRange(0, 99999);
 
             navigator.clipboard.writeText(linkInput.value).then(() => {
-                // Show notification
                 const notification = document.getElementById("copyNotification");
                 notification.classList.add("show");
                 
-                // Hide after 3 seconds
                 setTimeout(() => {
                     notification.classList.remove("show");
                 }, 3000);
@@ -577,7 +574,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['save_profile'])) {
             });
         }
 
-        // Character counter for about_me
         const aboutMeTextarea = document.getElementById('about_me');
         if (aboutMeTextarea) {
             aboutMeTextarea.addEventListener('input', function() {
@@ -588,7 +584,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['save_profile'])) {
             });
         }
 
-        // Auto-hide success message after 5 seconds
         const successAlert = document.querySelector('.alert-success');
         if (successAlert) {
             setTimeout(() => {

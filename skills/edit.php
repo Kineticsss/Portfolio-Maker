@@ -17,7 +17,6 @@ if (!isset($_GET['id'])) {
 
 $id = (int) $_GET['id'];
 
-// Fetch existing record
 try {
     $stmt = $pdo->prepare("SELECT * FROM technical_skills WHERE id = :id AND user_id = :user_id");
     $stmt->execute([':id' => $id, ':user_id' => $user_id]);
@@ -30,7 +29,6 @@ try {
     die("Database error: " . htmlspecialchars($e->getMessage()));
 }
 
-// Handle form submission
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $skill_name = trim($_POST['skill_name'] ?? '');
     $category = trim($_POST['category'] ?? '');

@@ -9,7 +9,6 @@ if (!isset($_SESSION['user_id'])) {
 
 $user_id = (int) $_SESSION['user_id'];
 
-// Initialize variables to avoid warnings
 $error = '';
 $success = '';
 

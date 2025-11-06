@@ -59,8 +59,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <?php if ($error): ?><p class="error"><?= $error; ?></p><?php endif; ?>
 
     <form method="post">
-        <label>Language Name <span style="color:red">*</span></label>
-        <input type="text" name="language_name" required>
+        <label>Langugae<span class="required">*</span></label>
+        <input type="text" name="Language" required>
 
         <label>Proficiency <span style="color:red">*</span></label>
         <select name="proficiency" required>
@@ -73,8 +73,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         </select>
 
         <div class="form-buttons">
-            <button type="submit" class="btn-submit">Add Language</button>
-            <a href="../portfolio.php" class="btn-cancel">Back</a>
+            <button type="submit">Add Language</button>
+            <a href="../portfolio.php" class="back-btn">Back</a>
         </div>
     </form>
 </div>
